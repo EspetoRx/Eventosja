@@ -7,9 +7,10 @@
 - Uma vez o Laragon instalado, clique em Iniciar Tudo. Dica: Não se esqueça das suas configuraçõe de banco de dados!
 - Abra o menu de contexto clicando em qualquer área em branco do programa e vá em Criar Rapidamente um Website e escolha Laravel.
 - Insira o nome Eventosjá e crie o projeto.
-- Se por ventura seu Laragon der um erro de "Allowed memory size", utilize o menu de contexto do Laragon, no submenu PHP, o atalho para o php.ini. Modifique o atributo "memory_limit" para -1. Rode composer install novamente no diretório do Eventosjá. 
+- Se por ventura seu Laragon der um erro de "Allowed memory size", utilize o menu de contexto do Laragon, no submenu PHP, o atalho para o php.ini. Modifique o atributo "memory_limit" para -1. Rode composer install novamente no diretório do Eventosjá.
+<img src="/docs/images/allowed_memory_size_error.png" style="width: 100%">
 - O Laragon se encarregou de rodar o comando de criação do projeto e do Schema no banco de dados;
-- O nome do Schema no banco de dados não pode possuir acento. Se você não possui um software de Gerenciamento de Banco de Dados recomendo fortemente a utilização do [MySQL Workbench](https://dev.mysql.com/downloads/workbench/). Contudo, um PhpMyAdmin deva servir ao propósito.
+- O nome do Schema no banco de dados não pode possuir acento. Se você não possui um software de Gerenciamento de Banco de Dados recomendo fortemente a utilização do [MySQL Workbench](https://dev.mysql.com/downloads/workbench/). Contudo, um [PhpMyAdmin](https://www.phpmyadmin.net/) deva servir ao propósito.
 - Droparemos o Schema com nome acentuado e continuaremos criando um Schema com um nome sem acento (criado schema "eventosja"). Use latin1 - default collation como a Collation.
 - Configuraremos o .env:
 - - Defina BD_DATABASE=eventosja
@@ -19,7 +20,6 @@
 - Uma vez instalado o NPM rode o comando mix watch --hot para executar o live reload e começarmos a trabalhar no projeto.
 - Limparei toda a wellcome.blade.php, para comportar nossos arquivos CSS e JS.
 - Neste ponto acho que vou dar mais um commit, o chamarei de "Alpha 0.0.1".
-
 
 
 
