@@ -17,7 +17,7 @@ class ConvidadosController extends Controller
     public function index()
     {
         //
-        $query = Convidados::all();
+        $query = Convidados::with(['eventos'])->get();
         return response(json_encode($query), 200);
     }
 
@@ -42,6 +42,8 @@ class ConvidadosController extends Controller
             'email' => $request->email
         ]);
 
+        $convidado = $convidado->with(['eventos']);
+
         return response(json_encode($convidado), 200);
     }
 
@@ -54,7 +56,7 @@ class ConvidadosController extends Controller
     public function show($id)
     {
         //
-        $convidado = Convidados::findOrFail($id);
+        $convidado = Convidados::with(['eventos'])->findOrFail($id);
         return response(json_encode($convidado), 200);
     }
 
@@ -68,7 +70,7 @@ class ConvidadosController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $convidado = Convidado::findOrFail($id);
+        $convidado = Convidados::findOrFail($id);
 
         $this->validate($request, [
             'nome' => 'required|string|min:3',
@@ -81,6 +83,8 @@ class ConvidadosController extends Controller
             'nome' => $request->nome,
             'email' => $request->email,
         ]);
+
+        $convidado = Convidados::with(['eventos'])->findOrFail($convidado->id);
 
         return response(json_encode($convidado), 200);
     }

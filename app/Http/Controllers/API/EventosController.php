@@ -17,7 +17,7 @@ class EventosController extends Controller
     public function index()
     {
         //
-        $eventos = Eventos::all();
+        $eventos = Eventos::with(['convidados'])->get();
         return response(json_encode($eventos), 200);
     }
 
@@ -46,6 +46,8 @@ class EventosController extends Controller
             'descricao' => $request->descricao
         ]);
 
+        $evento = $evento->with(['convidados']);
+
         return response(json_encode($evento), 200);
     }
 
@@ -58,7 +60,7 @@ class EventosController extends Controller
     public function show($id)
     {
         //
-        $evento = Eventos::findOrFail($id);
+        $evento = Eventos::with(['convidados'])->findOrFail($id);
         return response(json_encode($evento), 200);
     }
 
@@ -89,6 +91,8 @@ class EventosController extends Controller
             'data_evento' => $request->data_evento,
             'descricao' => $request->descricao
         ]);
+
+        $evento = Eventos::with(['convidados'])->findOrFail($evento->id);
 
         return response(json_encode($evento), 200);
     }

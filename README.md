@@ -104,7 +104,34 @@
 - Agora que já está tudo configurado e funcionando, vamos às traduções. Irei usar uma pasta pt-Br, dentro de lang, que é uma tradução que eu já havia feito. E, é claro, configurar a linguagem da aplicação em app.php.
 - E como um toque de mágica, vamos adicionar uma ProgressBar. Escolhi pela [vue-progressbar](https://github.com/hilongjw/vue-progressbar) porque já conheço e acho mais fácil.
 - Façamos o mesmo agora com o component Create Convidado.
-- Vamos fazer um novo commit para que não perdamos o que já temos.
+- Vamos fazer um novo commit para que não perdamos o que já temos (Commit 7).
+
+## Exibição dos dados
+
+- Procuremos por uma DataTable para que possamos exibir os nossos dados.
+- Vamos usar o [vuejs-datatable](https://www.npmjs.com/package/vuejs-datatable). Pessoalmente, nunca o utilizei, mas acho que será interessante.
+- Instale-o com: npm instal vuejs-datatable.
+- Vamos criar um componente global de utilização do datatable.
+- O componente do tutorial ainda se encontra meio engessado... Então vamos transformá-lo num componente reaprovetável a partir das props.
+- Comecemos pelos eventos:
+  - Vamos até o componente de eventos editá-lo para que a tabela apareça por lá.
+  - Façamos o mesmo para o componente de Convidados.
+
+## Implementemos a relação que o laravel propõe N por N
+
+- Relacione ambos os modelos com um belongsToMany.
+- Coloque-os para serem retornados juntamente com as informações dos modelos.
+
+## Implatantação do Botao Convidados
+
+- Recuperar codigo do [Modal Bootstrap](https://getbootstrap.com/docs/4.0/components/modal/).
+- Criar um componente reutilizáve do Bootstrap Modal.
+- Vamos adicioná-lo à nossa página de eventos.
+- Vamos acioná-lo quando clicarmos no botão Convidados da página de eventos.
+- A esse ponto do código esse tanto de componentes de botões no common me faz pensar se eu fiz a escolha certa de datatable para usar... Deveria ter ido com laravel-vue-datatabes, mas o pacote npm estava com falhas...
+- Vou copiar um modal meu que tem animações de entrada e saída para compor o programa.
+
+
 
 
 

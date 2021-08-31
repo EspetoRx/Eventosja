@@ -19,6 +19,13 @@ window.Vue = require('vue').default;
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
+import 'vuejs-datatable/dist/themes/bootstrap-4.esm';
+import { VuejsDatatableFactory } from 'vuejs-datatable';
+Vue.use( VuejsDatatableFactory );
+
+
+Vue.component('datatable-component', require('./components/Common/DatatableComponent.vue').default);
+
 Vue.component('navbar-component', require('./components/Navbar/NavbarComponent.vue').default);
 
 import Vue from 'vue';
@@ -98,12 +105,22 @@ let routes = [
         component: require('./components/Eventos/CreateEventosComponent.vue').default,
     },
     {
+        path: '/eventos/edit/:id',
+        component: require('./components/Eventos/CreateEventosComponent.vue').default,
+        props: true
+    },
+    {
         path: '/convidados',
         component: require('./components/Convidados/ConvidadosComponent.vue').default,
     },
     {
         path: '/convidados/create',
         component: require('./components/Convidados/CreateConvidadosComponent.vue').default
+    },
+    {
+        path: '/convidados/edit/:id',
+        component: require('./components/Convidados/CreateConvidadosComponent.vue').default,
+        props: true
     }
 ];
 
@@ -113,6 +130,8 @@ const router = new VueRouter({
 	linkActiveClass: "active",
     routes,
 });
+
+window.Fire = new Vue();
 
 const app = new Vue({
     el: '#app',

@@ -56,7 +56,6 @@
 <script>
     export default {
         mounted() {
-            console.log('Component Navbar Montado com sucesso.');
         },
         methods: {
             /**
