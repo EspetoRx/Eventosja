@@ -26,7 +26,7 @@
                     </div>
                     <div class="card-footer">
                         <div class="d-flex justify-content-between">
-                            <button type="button" role="button" class="btn btn-danger" :disabled="formEventos.busy" @click.prevent="voltarParaEventos()">Cancelar</button>
+                            <router-link to="/eventos" role="button" class="btn btn-danger" :disabled="formEventos.busy">Cancelar</router-link>
                             <button type="button" role="button" class="btn btn-success" :disabled="formEventos.busy" @click.prevent="(!editMode)?salvarEvento():editarEvento()">{{(!editMode)?'Salvar':'Editar'}}</button>
                         </div>
 
@@ -63,17 +63,7 @@
             // Vamos preencher a data para que já venha com o dia de hoje...
             let data_atual = moment(new Date()).format('YYYY-MM-DD');
             this.formEventos.data_evento = data_atual;
-            if(typeof this.$props.id != 'undefined'){
-                axios.get('/api/eventos/'+this.$props.id)
-                .then((response) => {
-                    if(response.data != {}){
-                        this.formEventos.fill(response.data);
-                        this.editMode = true;
-                    }else{
-                        this.$toastr.e("Não foi possível recuperar este evento. Tens certeza de que ele existe?");
-                    }
-                })
-            }
+            this.testId();
         },
         methods: {
             salvarEvento(){
@@ -94,7 +84,7 @@
                             Swal.close();
                             this.$Progress.finish();
                             this.$toastr.s("Evento salvo com sucesso.");
-                            this.voltarParaEventos();
+                            this.$router.push('/eventos');
                         })
                         .catch((error) => {
                             Swal.close();
@@ -122,7 +112,7 @@
                             Swal.close();
                             this.$Progress.finish();
                             this.$toastr.s("Evento salvo com sucesso.");
-                            this.voltarParaEventos();
+                            this.$router.push('/eventos');
                         })
                         .catch((error) => {
                             Swal.close();
@@ -133,7 +123,29 @@
                 });
             },
             voltarParaEventos(){
-                this.$router.push('/eventos');
+                
+            },
+            testId(){
+                if(typeof this.$props.id != 'undefined'){
+                    axios.get('/api/eventos/'+this.$props.id)
+                    .then((response) => {
+                        if(response.data != {}){
+                            this.formEventos.fill(response.data);
+                            this.editMode = true;
+                        }else{
+                            this.$toastr.e("Não foi possível recuperar este evento. Tens certeza de que ele existe?");
+                        }
+                    })
+                }else{
+                    this.editMode = false;
+                    this.formEventos.clear();
+                    this.formEventos.reset();
+                }
+            }
+        },
+        watch: {
+            'id': function(){
+                this.testId();
             }
         },
         components: {

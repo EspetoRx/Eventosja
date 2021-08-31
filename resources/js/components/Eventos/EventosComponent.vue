@@ -219,11 +219,14 @@
                         })
                     }
                 });
+            },
+            goToEventosEdit(id){
+                this.$router.push('/eventos/edit/'+id);
             }
         },
         mounted() {
             Fire.$on('update', (row) => {
-                this.$router.push('/eventos/edit/'+row.id);
+                this.goToEventosEdit(row.id);
             });
             Fire.$on('deletar', (row) => {
                 Confirme.fire({

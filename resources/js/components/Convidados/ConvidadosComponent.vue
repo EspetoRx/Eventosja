@@ -170,8 +170,9 @@
                         });
                         this.formConvida.post('/api/convidados_eventos')
                         .then((res) => {
-                            this.formConvida.evento = res.data.evento;
-                            this.formConvida.convidado = '';
+                            console.log("Entrei aqui");
+                            this.formConvida.convidado = res.data.convidado;
+                            this.formConvida.evento = '';
                             Swal.close();
                             this.$Progress.finish();
                             this.$toastr.s("Convite realizado com sucesso.");
@@ -249,7 +250,6 @@
                 })
             });
             Fire.$on('eventos', (row) => {
-                console.log(row);
                 this.formConvida.convidado = row;
                 this.openModalEventos();
             });

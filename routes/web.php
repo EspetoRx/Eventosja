@@ -14,4 +14,5 @@ use App\Http\Controllers\HomeController;
 |
 */
 
+Route::redirect('/', '/eventos');
 Route::get('/{path}',[HomeController::class, 'index'])->where('path', '.*');

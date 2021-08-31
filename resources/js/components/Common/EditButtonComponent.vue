@@ -1,5 +1,5 @@
 <template>
-    <button type="button" class="btn btn-sm btn-warning" @click.prevent="update()">Editar</button>
+    <router-link :to="'/edit/'+this.$attrs.row.id" class="btn btn-sm btn-warning" append>Editar</router-link>
 </template>
 
 <script>

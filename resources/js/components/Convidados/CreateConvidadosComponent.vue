@@ -122,6 +122,24 @@
             },
             voltaParaConvidados(){
                 this.$router.push('/convidados');
+            },
+            testId(){
+                if(typeof this.$props.id != 'undefined'){
+                    axios.get('/api/convidados/'+this.$props.id)
+                    .then((response) => {
+                        if(response.data != {}){
+                            this.formConvidados.fill(response.data);
+                            this.formConvidados.confirma_email = this.formConvidados.email;
+                            this.editMode = true;
+                        }else{
+                            this.$toastr.e("Não foi possível recuperar este convidado. Tens certeza de que ele existe?");
+                        }
+                    })
+                }else{
+                    this.formConvidados.clear();
+                    this.formConvidados.reset();
+                    this.editMode = false;
+                }
             }
         },
         components: {
@@ -131,17 +149,11 @@
             AlertSuccess
         },
         mounted() {
-            if(typeof this.$props.id != 'undefined'){
-                axios.get('/api/convidados/'+this.$props.id)
-                .then((response) => {
-                    if(response.data != {}){
-                        this.formConvidados.fill(response.data);
-                        this.formConvidados.confirma_email = this.formConvidados.email;
-                        this.editMode = true;
-                    }else{
-                        this.$toastr.e("Não foi possível recuperar este convidado. Tens certeza de que ele existe?");
-                    }
-                })
+            this.testId();
+        },
+        watch: {
+            'id': function(){
+                this.testId();
             }
         }
     }
