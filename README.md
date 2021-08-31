@@ -14,13 +14,30 @@
 - O nome do Schema no banco de dados não pode possuir acento. Se você não possui um software de Gerenciamento de Banco de Dados recomendo fortemente a utilização do [MySQL Workbench](https://dev.mysql.com/downloads/workbench/). Contudo, um [PhpMyAdmin](https://www.phpmyadmin.net/) deva servir ao propósito.
 - Droparemos o Schema com nome acentuado e continuaremos criando um Schema com um nome sem acento (criado schema "eventosja"). Use latin1 - default collation como a Collation.
 - Configuraremos o .env:
-- - Defina BD_DATABASE=eventosja
+  - Defina BD_DATABASE=eventosja
 - Rode o comando: php artisan key:generate para gerar a chave única de identificação da aplicação.
 - Abra o menu de contexto do Laragon novamente, submenu www, e escolha o Eventosjá para abrir a aplicação. Se você ver uma tela do Laravel está tudo certo. Podemos dar continuidade na construção da aplicação.
 - Execute o comando npm install para que possamos instalar o NPM.
 - Uma vez instalado o NPM rode o comando mix watch --hot para executar o live reload e começarmos a trabalhar no projeto.
 - Limparei toda a wellcome.blade.php, para comportar nossos arquivos CSS e JS.
-- Neste ponto acho que vou dar mais um commit, o chamarei de "Alpha 0.0.1".
+- Neste ponto acho que vou dar mais um commit, o chamarei de "Alpha 0.0.1". Fechamos este ciclo com 6 commits para ajustar o texto do README.md com as etapas de reprodução da aplicação.
+- Vamos instalar o laravel/ui para instalarmos o Vue.JS:
+  - Rode composer require laravel/ui para instalar.
+  - Rode php artisan ui vue para instalar o Vue.JS
+  - Rode npm install para instalar o Vue.JS
+- Vamos instalar o Twitter Bootstrap:
+  - Rode php artisan ui Bootstrap
+  - Rode npm install para instalar o Bootstrap.
+- Deve-se alterar algumas informações em webpack.mix.js para que a instalação possa terminar:
+  - No .js encadeie a função .vue() e no lugar do .saas use o .postCss;
+  - Rode npm run dev (2x). A primeira instalará o vue-loader;
+- Recebemos então um erro de construção sem um dos módulos;
+  - Module build failed (from ./node_modules/mini-css-extract-plugin/dist/loader.js);
+  - Pesquisando através do [StackOverflow](https://stackoverflow.com/questions/66613192/compilation-errors-occur-when-building-code-with-postcss-preprocessor) pode-se descobrir que o erro tem relação direta com o PostCss e isso exigiu algumas mudanças irrelevantes no nosso arquivo Webpack.mix.
+  - Foi necessária a instalação do Pacote NPM postcss-import para que tudo estivesse OK.
+  - Algumas mensagens de métodos "deprecated" foram encontrados ao se utilizar o comando npm run dev, mas nada que impeça o bom funcionamento do código.
+- Uma vez todos esses problemas resolvidos rodemos npm run hot para termos atualizações no estilo hot reloading para evitar de ter que atualizar a página manualmente. E voilà! Já podemos iniciar a programação de fato.
+- Vamos fazer um commit aqui para certificar-nos de que esteja tudo nos mais devidos conformes.
 
 
 
