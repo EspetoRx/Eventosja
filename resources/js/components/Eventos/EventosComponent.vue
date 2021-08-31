@@ -206,7 +206,7 @@
                         });
                         this.formConvida.delete('/api/convidados_eventos/'+id)
                         .then((res) => {
-                            this.formConvida.evento = res.data;
+                            this.formConvida.evento = res.data.evento;
                             this.formConvida.convidado = '';
                             Swal.close();
                             this.$Progress.finish();
@@ -220,14 +220,8 @@
                     }
                 });
             },
-            goToEventosEdit(id){
-                this.$router.push('/eventos/edit/'+id);
-            }
         },
         mounted() {
-            Fire.$on('update', (row) => {
-                this.goToEventosEdit(row.id);
-            });
             Fire.$on('deletar', (row) => {
                 Confirme.fire({
                     icon: 'warning',

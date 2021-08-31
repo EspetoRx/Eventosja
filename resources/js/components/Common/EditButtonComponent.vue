@@ -1,5 +1,5 @@
 <template>
-    <router-link :to="'/edit/'+this.$attrs.row.id" class="btn btn-sm btn-warning" append>Editar</router-link>
+    <router-link :to="`${this.$router.app.$route.fullPath}/edit/${this.$attrs.row.id}`" class="btn btn-sm btn-warning" append>Editar</router-link>
 </template>
 
 <script>

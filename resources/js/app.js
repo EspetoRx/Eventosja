@@ -100,28 +100,28 @@ Vue.config.productionTip = false;
 
 let routes = [
     {
-        path: '/eventos',
+        path: '/eventos/',
         component: require('./components/Eventos/EventosComponent.vue').default,
     },
     {
-        path: '/eventos/create',
+        path: '/eventos/create/',
         component: require('./components/Eventos/CreateEventosComponent.vue').default,
     },
     {
-        path: '/eventos/edit/:id',
+        path: '/eventos/edit/:id/',
         component: require('./components/Eventos/CreateEventosComponent.vue').default,
         props: true
     },
     {
-        path: '/convidados',
+        path: '/convidados/',
         component: require('./components/Convidados/ConvidadosComponent.vue').default,
     },
     {
-        path: '/convidados/create',
+        path: '/convidados/create/',
         component: require('./components/Convidados/CreateConvidadosComponent.vue').default
     },
     {
-        path: '/convidados/edit/:id',
+        path: '/convidados/edit/:id/',
         component: require('./components/Convidados/CreateConvidadosComponent.vue').default,
         props: true
     }

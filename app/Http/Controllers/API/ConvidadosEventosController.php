@@ -4,9 +4,11 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 use App\Models\ConvidadosEventos;
 use App\Models\Eventos;
+use App\Models\Convidados;
 
 class ConvidadosEventosController extends Controller
 {
@@ -90,8 +92,10 @@ class ConvidadosEventosController extends Controller
         //
         $query = ConvidadosEventos::findOrFail($id);
         $evento = $query->evento_id;
+        $convidado = $query->convidado_id;
         $query->delete();
         $evento = Eventos::with(['convidados'])->findOrFail($evento);
-        return response(json_encode($evento), 200);
+        $convidado = Convidados::with(['eventos'])->findOrFail($convidado);
+        return response(json_encode(['evento' => $evento, 'convidado' => $convidado]), 200);
     }
 }

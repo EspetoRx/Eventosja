@@ -123,7 +123,7 @@
                 });
             },
             voltarParaEventos(){
-                
+
             },
             testId(){
                 if(typeof this.$props.id != 'undefined'){
@@ -140,6 +140,8 @@
                     this.editMode = false;
                     this.formEventos.clear();
                     this.formEventos.reset();
+                    let data_atual = moment(new Date()).format('YYYY-MM-DD');
+                    this.formEventos.data_evento = data_atual;
                 }
             }
         },

@@ -189,19 +189,19 @@
                 Confirme.fire({
                     icon: 'warning',
                     title: 'Desconvidar?',
-                    text: 'Tem certeza de que deseja desconvidar ' + nome + ' para o evento do dia ' + moment(this.formConvida.evento.data_evento).format('DD/MM/YYYY') + '?'
+                    text: 'Tem certeza de que deseja desconvidar ' + this.formConvida.convidado.nome + ' para o evento do dia ' + moment(this.formConvida.evento.data_evento).format('DD/MM/YYYY') + '?'
                 })
                 .then((response) => {
                     if(response.value){
                         this.$Progress.start();
                         Carregando.fire({
                             title: 'Aguarde...',
-                            text: 'Extamos tentando desconvidar ' + nome + '...'
+                            text: 'Extamos tentando desconvidar ' + this.formConvida.convidado.nome + '...'
                         });
                         this.formConvida.delete('/api/convidados_eventos/'+id)
                         .then((res) => {
-                            this.formConvida.evento = res.data;
-                            this.formConvida.convidado = '';
+                            this.formConvida.convidado = res.data.convidado;
+                            this.formConvida.evento = '';
                             Swal.close();
                             this.$Progress.finish();
                             this.$toastr.s("Convite retirado com sucesso.");
@@ -219,9 +219,6 @@
             }
         },
         mounted() {
-            Fire.$on('update', (row) => {
-                this.$router.push('/convidados/edit/'+row.id);
-            });
             Fire.$on('deletar', (row) => {
                 Confirme.fire({
                     icon: 'warning',
