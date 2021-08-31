@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\API\EventosController;
 use App\Http\Controllers\API\ConvidadosController;
+use App\Http\Controllers\API\ConvidadosEventosController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,3 +20,4 @@ use App\Http\Controllers\API\ConvidadosController;
 
 Route::resource('/eventos', EventosController::class);
 Route::resource('/convidados', ConvidadosController::class);
+Route::resource('/convidados_eventos', ConvidadosEventosController::class);

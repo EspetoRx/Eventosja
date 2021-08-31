@@ -17,8 +17,13 @@
                         </div>
                         <div class="col-md-12 form-group">
                             <label for="email">E-mail: <span class="text-danger">*</span></label>
-                            <input type="email" id="email" name="email" class="form-control" placeholder="emal@company.com" v-model="formConvidados.email" :class="{'is-invalid' : formConvidados.errors.has('email')}" :disabled="editMode">
+                            <input type="email" id="email" name="email" class="form-control" placeholder="email@company.com" v-model="formConvidados.email" :class="{'is-invalid' : formConvidados.errors.has('email')}" :disabled="editMode">
                             <HasError :form="formConvidados" field="email"></HasError>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <label for="confirma_email">Confirmação de e-mail: <span class="text-danger">*</span></label>
+                            <input type="email" id="confirma_email" name="confirma_email" class="form-control" placeholder="email@company.com" v-model="formConvidados.confirma_email" :class="{'is-invalid' : formConvidados.errors.has('confirma_email')}" :disabled="editMode">
+                            <HasError :form="formConvidados" field="confirma_email"></HasError>
                         </div>
                         <div class="col-md-12 form-group text-danger">
                             * Preencimento obrigatório.
@@ -47,6 +52,7 @@
                 id: '',
                 nome: '',
                 email: '',
+                confirma_email: '',
                 created_at: '',
                 updated_at: '',
             }),
@@ -130,6 +136,7 @@
                 .then((response) => {
                     if(response.data != {}){
                         this.formConvidados.fill(response.data);
+                        this.formConvidados.confirma_email = this.formConvidados.email;
                         this.editMode = true;
                     }else{
                         this.$toastr.e("Não foi possível recuperar este convidado. Tens certeza de que ele existe?");

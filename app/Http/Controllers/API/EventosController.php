@@ -74,8 +74,8 @@ class EventosController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $evento = Eventos::findOrFail($id);
-        
+        $evento = Eventos::with(['convidados'])->findOrFail($id);
+
         $this->validate($request, [
             'data_evento' => 'required|date|unique:eventos,data_evento,'.$id.',id',
             'descricao' => 'required|string|min:3',
@@ -86,6 +86,12 @@ class EventosController extends Controller
             'descricao.required' => 'O campo descrição é obrigatório.',
             'descricao.min' => 'O campo descrição deve possuir no mínimo :min caracteres.'
         ]);
+
+        if(count($evento->convidados) > 0 && $request->data_evento != $evento->data_evento){
+            return response(json_encode(['errors' => [
+                'data_evento' => 'Não é possível alterar a data de um evento que possua convidados.'
+            ]]), 500);
+        }
 
         $evento->update([
             'data_evento' => $request->data_evento,
@@ -106,7 +112,12 @@ class EventosController extends Controller
     public function destroy($id)
     {
         //
-        $evento = Eventos::findOrFail($id);
+        $evento = Eventos::with(['convidados'])->findOrFail($id);
+        if(count($evento->convidados) > 0){
+            return response(json_encode(['errors' => [
+                'impossivel_excluir' => 'Impossível excluir um evento com convidados.'
+            ]]), 500);
+        }
         $evento->delete();
         return response(json_encode('HTTP_OK'), 200);
     }

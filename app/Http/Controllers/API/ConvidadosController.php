@@ -33,6 +33,7 @@ class ConvidadosController extends Controller
         $this->validate($request, [
             'nome' => 'required|string|min:3',
             'email' => 'required|email|unique:convidados,email',
+            'confirma_email' => 'required|email|same:email'
         ], [
             'email.unique' => 'Já existe um convidado com este e-mail',
         ]);
@@ -75,9 +76,14 @@ class ConvidadosController extends Controller
         $this->validate($request, [
             'nome' => 'required|string|min:3',
             'email' => 'required|email|unique:convidados,email,'.$id.',id',
+            'confirma_email' => 'required|email|same:email'
         ], [
             'email.unique' => 'Já existe um convidado com este e-mail',
         ]);
+
+        if($convidado->email != $request->email){
+            return response(json_encode(['errors' => ['email' => 'Não é possível alterar o e-mail de um convidado.']]), 500);
+        }
 
         $convidado->update([
             'nome' => $request->nome,

@@ -11,7 +11,7 @@ class Eventos extends Model
 {
     use HasFactory;
 
-    protected $fillable = 
+    protected $fillable =
     [
         'id',
         'descricao',
@@ -22,6 +22,6 @@ class Eventos extends Model
 
     public function convidados()
     {
-        return $this->belongsToMany(Convidados::class, 'convidado_evento', 'evento_id', 'convidado_id');
+        return $this->belongsToMany(Convidados::class, 'convidados_eventos', 'evento_id', 'convidado_id')->withPivot('id');
     }
 }

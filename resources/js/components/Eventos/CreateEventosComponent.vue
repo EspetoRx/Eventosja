@@ -12,7 +12,7 @@
                         <AlertSuccess :form="formEventos" message="O Evento foi registrado com sucesso."></AlertSuccess>
                         <div class="col-md-12 form-group">
                             <label for="data_evento">Data do evento: <span class="text-danger">*</span></label>
-                            <input type="date" name="data_evento" id="data_evento" class="form-control" v-model="formEventos.data_evento" :class="{'is-invalid' : formEventos.errors.has('data_evento')}" />
+                            <input type="date" name="data_evento" id="data_evento" class="form-control" v-model="formEventos.data_evento" :class="{'is-invalid' : formEventos.errors.has('data_evento')}" :disabled="editMode && formEventos.convidados.length > 0"/>
                             <HasError :form="formEventos" field="data_evento"></HasError>
                         </div>
                         <div class="col-md-12 form-group">
@@ -29,7 +29,7 @@
                             <button type="button" role="button" class="btn btn-danger" :disabled="formEventos.busy" @click.prevent="voltarParaEventos()">Cancelar</button>
                             <button type="button" role="button" class="btn btn-success" :disabled="formEventos.busy" @click.prevent="(!editMode)?salvarEvento():editarEvento()">{{(!editMode)?'Salvar':'Editar'}}</button>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -47,6 +47,7 @@
                 id: '',
                 data_evento: '',
                 descricao: '',
+                convidados: '',
                 created_at: '',
                 updated_at: '',
             }),

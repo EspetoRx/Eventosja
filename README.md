@@ -122,7 +122,7 @@
 - Relacione ambos os modelos com um belongsToMany.
 - Coloque-os para serem retornados juntamente com as informações dos modelos.
 
-## Implatantação do Botao Convidados
+## Implatantação do Botão Convidados
 
 - Recuperar codigo do [Modal Bootstrap](https://getbootstrap.com/docs/4.0/components/modal/).
 - Criar um componente reutilizáve do Bootstrap Modal.
@@ -130,7 +130,12 @@
 - Vamos acioná-lo quando clicarmos no botão Convidados da página de eventos.
 - A esse ponto do código esse tanto de componentes de botões no common me faz pensar se eu fiz a escolha certa de datatable para usar... Deveria ter ido com laravel-vue-datatabes, mas o pacote npm estava com falhas...
 - Vou copiar um modal meu que tem animações de entrada e saída para compor o programa.
-
+- Agora vamos ao CRUD de relacionamento entre as duas Entidades.
+- Criemos um Model ConvidadosEventos e uma Controladora ConvidadosEventosController para facilitar a nossa vida;
+- Vamos preencher a controladora para que tudo funcione nos conformes, realizando a associação da melhor forma possível.
+- Vamos usar o componente de [vue-multiselect](https://vue-multiselect.js.org/) para podermos selecionar o convidado a ser associado com o evento.
+- Apliquemos as regras de negócio dos Eventos no front-end e no back-end.
+- Agora que já aplicamos as regras de negócio dos Eventos, vamos fazê-lo também nos convidados e finalizar o projeto.
 
 
 

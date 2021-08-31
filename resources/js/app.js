@@ -74,6 +74,9 @@ Vue.use(VueToastr, {
     clickClose: true
 });
 
+import Multiselect from 'vue-multiselect';
+Vue.component('vue-multiselect', Multiselect);
+
 import VueProgressBar from 'vue-progressbar'
 
 const options = {

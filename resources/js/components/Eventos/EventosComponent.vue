@@ -1,3 +1,8 @@
+<style scoped>
+    .invalid-multiselect{
+        border: 1px solid #dc3545;
+    }
+</style>
 <template>
     <div class="container">
         <div class="row justify-content-center">
@@ -12,7 +17,7 @@
                                 +
                             </router-link>
                         </div>
-                        
+
                     </div>
 
                     <div class="card-body">
@@ -35,8 +40,42 @@
                 Convidados
             </template>
             <template v-slot:main>
-                <div class="form-control">
-
+                <AlertErrors :form="formConvida" message="Houve algo de errado ao realizar este convite..."></AlertErrors>
+                <AlertSuccess :form="formConvida" message="Operação realizada com sucesso."></AlertSuccess>
+                <div class="form-group">
+                    <label for="convidado">Convidado:</label>
+                    <vue-multiselect
+                        v-model="formConvida.convidado"
+                        :options="convidados"
+                        :multiple="false"
+                        :allow-empty="true"
+                        label="nome"
+                        track-by="id"
+                        selectLabel="Enter p/ selecionar"
+                        deselectLabel="Enter p/ deselecionar"
+                        selectedLabel="Selecionado"
+                        placeholder="Selecione alguém para convidar"
+                        :class="{ 'invalid-multiselect': formConvida.errors.has('convidado.id') }"
+                        id="convidado"
+                    >
+                        <template slot="noResult">Nenhum resultado encontrado.</template>
+                        <template slot="noOptions">Não há nada pra ser selecionado.</template>
+                    </vue-multiselect>
+                </div>
+                <div class="form-group float-right" v-if="formConvida.convidado">
+                    <button type="button" role="button" class="btn btn-sm btn-success" @click.prevent="convidar()">Convidar</button>
+                </div>
+                <div class="form-group" v-if="formConvida.evento.convidados.length > 0">
+                    <h5>Convidados</h5>
+                    <ul>
+                        <li v-for="(el, i) in formConvida.evento.convidados" :key="i">
+                            {{ el.nome }} <button class="btn btn-sm btn-link text-danger text-decoration-none" @click.prevent="desconvidar(el.pivot.id, el.nome)">Desconvidar</button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="form-group" v-else>
+                    <h5>Convidados</h5>
+                    <p>Você ainda não convidou ninguém. Selecione um convidado acima para enviar um convite.</p>
                 </div>
             </template>
         </BootstrapModal>
@@ -49,6 +88,8 @@
     import DeleteButtonComponet from './../Common/DeleteButtonComponent.vue';
     import ConvidadosButtonComponent from './../Common/ConvidadosButtonComponent.vue';
     import BootstrapModal from './../Common/BootstrapModal.vue';
+    import Form from 'vform';
+    import {HasError, AlertError, AlertSuccess, AlertErrors} from 'vform/src/components/bootstrap4';
     import moment from 'moment';
     export default {
         data: () => ({
@@ -89,7 +130,13 @@
             filter: '',
             perPage: 10,
             modalConvidadosOpened: false,
-            
+            convidados: [],
+            formConvida: new Form({
+                evento: '',
+                evento_id: '',
+                convidado: '',
+                convidado_id: '',
+            }),
         }),
         methods: {
             getEventos() {
@@ -98,6 +145,12 @@
                     this.rows = response.data;
                 });
             },
+            getConvidados(){
+                axios.get('/api/convidados')
+                .then((response) => {
+                    this.convidados = response.data;
+                })
+            },
             invertModalConvidados() {
                 this.modalConvidadosOpened = !this.modalConvidadosOpened;
             },
@@ -105,7 +158,67 @@
                 this.invertModalConvidados();
             },
             closeModalConvidados() {
+                this.formConvida.clear();
+                this.formConvida.reset();
+                this.getEventos();
                 this.invertModalConvidados();
+            },
+            convidar(){
+                Confirme.fire({
+                    title: 'Convidar?',
+                    text: 'Tem certeza de que deseja convidar ' + this.formConvida.convidado.nome + ' para o evento do dia ' + moment(this.formConvida.evento.data_evento).format('DD/MM/YYYY') + '?'
+                })
+                .then((response) => {
+                    if(response.value){
+                        this.$Progress.start();
+                        Carregando.fire({
+                            title: 'Aguarde...',
+                            text: 'Extamos tentando convidar ' + this.formConvida.convidado.nome + '...'
+                        });
+                        this.formConvida.post('/api/convidados_eventos')
+                        .then((res) => {
+                            this.formConvida.evento = res.data.evento;
+                            this.formConvida.convidado = '';
+                            Swal.close();
+                            this.$Progress.finish();
+                            this.$toastr.s("Convite realizado com sucesso.");
+                        })
+                        .catch((error) => {
+                            Swal.close();
+                            this.$Progress.fail();
+                            this.$toastr.e("Convite não pode ser realizado. Algo aconteceu...");
+                        })
+                    }
+                });
+            },
+            desconvidar(id, nome){
+                Confirme.fire({
+                    icon: 'warning',
+                    title: 'Desconvidar?',
+                    text: 'Tem certeza de que deseja desconvidar ' + nome + ' para o evento do dia ' + moment(this.formConvida.evento.data_evento).format('DD/MM/YYYY') + '?'
+                })
+                .then((response) => {
+                    if(response.value){
+                        this.$Progress.start();
+                        Carregando.fire({
+                            title: 'Aguarde...',
+                            text: 'Extamos tentando desconvidar ' + nome + '...'
+                        });
+                        this.formConvida.delete('/api/convidados_eventos/'+id)
+                        .then((res) => {
+                            this.formConvida.evento = res.data;
+                            this.formConvida.convidado = '';
+                            Swal.close();
+                            this.$Progress.finish();
+                            this.$toastr.s("Convite retirado com sucesso.");
+                        })
+                        .catch((error) => {
+                            Swal.close();
+                            this.$Progress.fail();
+                            this.$toastr.e("Convite não pode ser removido. Algo aconteceu...");
+                        })
+                    }
+                });
             }
         },
         mounted() {
@@ -135,14 +248,26 @@
                         .catch((error) => {
                             Swal.close();
                             this.$Progress.fail();
+                            console.log(error.response);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Erro!',
+                                text: (error.response.data.errors != '')?error.response.data.errors.impossivel_excluir:'Eita, o que será que aconteceu?',
+                                confirmButtonColor: '#6cb2eb',
+                                confirmButtonText: 'Fazer o quê, né...'
+                            });
                         })
                     }
                 })
             });
             Fire.$on('convidados', (row) => {
-                console.log('Entrei aqui?');
+                this.formConvida.evento = row;
                 this.openModalConvidados();
             });
+            this.getConvidados();
+        },
+        computed: {
+            console: () => console
         },
         components: {
             DatatableComponent,
@@ -150,6 +275,10 @@
             DeleteButtonComponet,
             ConvidadosButtonComponent,
             BootstrapModal,
+            HasError,
+            AlertError,
+            AlertErrors,
+            AlertSuccess
         }
     }
 </script>
