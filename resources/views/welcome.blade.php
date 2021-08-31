@@ -9,8 +9,11 @@
         <link rel="stylesheet" href="{{mix('css/app.css')}}">
     </head>
     <body>
-        <div id="app"></div>
-        <h1>Pão de batata</h1>
+        <div id="app">
+            <vue-progress-bar></vue-progress-bar>
+            <navbar-component></navbar-component>
+            <router-view class="p-2"></router-view>
+        </div>
         <script src="{{mix('js/app.js')}}"></script>
     </body>
 </html>

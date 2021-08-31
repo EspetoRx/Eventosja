@@ -1,6 +1,6 @@
 # Eventosja
 
-## Passo à passo da instalação
+## Passo à passo do desenvolvimento
 
 - Estou utilizando o ambiente de desenvolvimento Windows 10 64-bits;
 - Como container de inicialização estou utilizando o [Laragon Full 64-bits](https://laragon.org/download/index.html);
@@ -37,7 +37,74 @@
   - Foi necessária a instalação do Pacote NPM postcss-import para que tudo estivesse OK.
   - Algumas mensagens de métodos "deprecated" foram encontrados ao se utilizar o comando npm run dev, mas nada que impeça o bom funcionamento do código.
 - Uma vez todos esses problemas resolvidos rodemos npm run hot para termos atualizações no estilo hot reloading para evitar de ter que atualizar a página manualmente. E voilà! Já podemos iniciar a programação de fato.
-- Vamos fazer um commit aqui para certificar-nos de que esteja tudo nos mais devidos conformes.
+- Vamos fazer um commit aqui para certificar-nos de que esteja tudo nos mais devidos conformes. (Commit 6)
+
+## Da engenharia
+
+- Começemos pela engenharia de banco de dados, criando um Diagrma de Bancos de Dados.
+- Teremos dois modelos Eventos e Convidados.
+- O Evento possui como atributos:
+  - ID; 
+  - Descrição;
+  - Data_evento (unique);
+  - Timestamp de crição;
+  - Timestamp de alteração;
+- O Convidados possui como atributos:
+  - ID;
+  - Nome;
+  - Email (unique);
+  - Timestamp de criação;
+  - Timestamp de alteração;
+- Há alem dos modelos uma tabela de relação N por N que associa Convidados à eventos. Essa tabela carrega consigo o ID do Evento e o ID do convidado. Contudo, essa relação poderia facilmente ser 1 por N, aonde cada evento possui N convidados, mas para exemplificar o desenvolvimento de uma aplicação N por N, adota-se essa relação entre as duas entidades.
+<img src="/docs/images/modelo_de_banco_de_dados.png" style="width: 100%" /><br>
+- Tendo dito isso, vamos definir os Modelos, as Migrations. Execute:
+  - php artisan make:model Eventos
+  - php artisan make:model Convidados
+  - php artisan make:migration create_eventos_table
+  - php artisan make:migration create_convidados_table
+  - php artisan make:migration create_convidados_eventos_table
+
+## Da configuração das rotas
+
+- Partindo do pressuposto que já se conheça o Vue.Js, vamos configurar a aplicação para ter as referidas telas.
+- Primeiramente criaremos um contralador para redirecionarmos as rotas para o Vue.Js.
+  - php artisan make:controller HomeController
+- E vamos configurar as rotas para passarem pelo HomeController e chegarem no Vue Router que será configurado logo mais à frente.
+  - Em web.php substitua o que houver lá por: Route::get('/{path}',\[HomeController, 'index'\])->where('path', '.*');
+  - Não se esqueça de importar o controllador. Ele será responsável por retornar a view 'welcome';
+- Uma vez feito isso, vamos configurar nosso Vue.Js e Vue Router.
+  - Instale o Vue Router através do npm install vue-router;
+  - Configure as rotas das 4 telas (e uma adicional para um calendário rsrs);
+  - Salve o arquivo app.js para que tudo dê certo.
+
+## Da navbar
+
+- Vamos criar uma navbar para que possamos navegar entre as telas:
+  - Recuperaremos o código a partir do [Bootstrap](https://getbootstrap.com/docs/4.0/components/navbar/) e criaremos um novo Component para armazenar essa Navbar.
+  - Configuraremos nossa Navbar com nossos router-links para agilizar o processo e vamos já editar os componentes de criação de Eventos e de Convidados para que tenhamos dados de teste.
+- Vamos criar as Classes controladoras na pasta de API.
+  - Rode php artisan make:controller API/EventosController --api
+  - Rode php artisan make:controller API/ConvidadosController --api
+  - Não se esqueça de registrar as rotas em api.php substituindo o que tem por lá.
+  - Vamos editar os controladores já para podermos fazer alterações sobre os dados (Não nos esquecendo, é claro, das regras de negócio).
+
+## Componentes de inserção
+
+- Uma vez já editados os controladores, vamos fazer a edição dos componentes de inserção.
+- Uma vez editados os componentes de inserção, vamos à busca de um controlador de formulários. Irei usar o vForm para faciltar minha vida uma vez já que trabalho com o mesmo. É um pacote do [Creto Eusebiu](https://github.com/cretueusebiu/vform). Importá-lo-ei somente onde houver necessidade, ou seja, nos componentes Create.
+  - Adapte os componentes de Criação para incorporar o vForm;
+- Como vamos trabalhar com datas nos eventos, vamos aproveitar para usar o pacote moment.js.
+  - Instale atraves do npm install moment.
+  - Importe-o para o CreateEventos.
+- Vamos baixar o [Sweet Alert 2](https://sweetalert2.github.io/) para dar um charme nas confirmações.
+  - Instale através do npm i sweetalert2.
+  - Importe-o diretamente no app.js pois será utilizado de forma recorrente.
+  - E também já vou definir mixin's para confirmação e Carregamento, aonde eu somente necessite escrever textos (rsrs).
+- Como os toasts do Sweet Alert não "stackam", vou utilizar o [vue-toastr](http://s4l1h.github.io/vue-toastr/) para esta função.
+- Agora que já está tudo configurado e funcionando, vamos às traduções. Irei usar uma pasta pt-Br, dentro de lang, que é uma tradução que eu já havia feito. E, é claro, configurar a linguagem da aplicação em app.php.
+- E como um toque de mágica, vamos adicionar uma ProgressBar. Escolhi pela [vue-progressbar](https://github.com/hilongjw/vue-progressbar) porque já conheço e acho mais fácil.
+- Façamos o mesmo agora com o component Create Convidado.
+- Vamos fazer um novo commit para que não perdamos o que já temos.
 
 
 

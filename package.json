@@ -10,7 +10,7 @@
         "production": "mix --production"
     },
     "devDependencies": {
-        "axios": "^0.21",
+        "axios": "^0.21.1",
         "bootstrap": "^4.6.0",
         "jquery": "^3.6",
         "laravel-mix": "^6.0.6",
@@ -26,7 +26,14 @@
     },
     "dependencies": {
         "mini-css-extract-plugin": "^1.6.2",
+        "moment": "^2.29.1",
         "node-sass": "^6.0.1",
-        "postcss-import": "^14.0.2"
+        "postcss-import": "^14.0.2",
+        "sweetalert2": "^11.1.4",
+        "toastr": "^2.1.4",
+        "vform": "^2.1.1",
+        "vue-progressbar": "^0.7.5",
+        "vue-router": "^3.5.2",
+        "vue-toastr": "^2.1.2"
     }
 }
